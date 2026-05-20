@@ -1,0 +1,1701 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Answers</title>
+</head>
+<body>
+  <pre>
+1. Implementation of Binary Search 
+
+algo
+
+Step 1: Start
+
+Step 2: Input
+
+  •Read the number of elements n
+
+  •Read n sorted elements into the array
+
+  •Read the target element to search
+
+Step 3: Initialise
+
+  •Set left = 0
+
+  •Set right = n - 1
+
+Step 4: Perform Binary Search
+
+  Repeat while left <= right
+
+  1.Find the middle index
+
+	mid = left + (right - left) / 2
+
+  2.Compare the middle element with the target
+
+	•If arr[mid] == target
+
+	      •Return mid (element found)
+
+	•Else if arr[mid] < target
+
+	      •Set left = mid + 1
+
+	•Else
+
+	      •Set right = mid - 1
+
+Step 5: Element Not Found
+
+    •If the loop ends without finding the element, return -1
+
+Step 6: Display Result
+
+   •If result is not -1
+
+	•Print Element found at index result
+
+   •Else
+
+	•Print Element not found
+
+Step 7: Stop
+
+
+
+Time Complexity
+
+Best Case Complexity
+
+O(1)
+
+When the target element is found at the middle position in the first comparison.
+
+Average Case Complexity
+
+O(log n)
+
+The search space is reduced by half in each step.
+
+Worst Case Complexity
+
+O(log n)
+
+Occurs when the element is at the last position or is not present in the array.
+
+Space Complexity
+
+O(1)
+
+Only a few extra variables such as left, right, and mid are used. 
+
+
+Code:
+
+
+
+#include <stdio.h>
+
+int binarySearch(int arr[], int size, int target) {
+    int left = 0, right = size - 1;
+
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+
+        if (arr[mid] == target)
+            return mid;
+        else if (arr[mid] < target)
+            left = mid + 1;
+        else
+            right = mid - 1;
+    }
+
+    return -1;
+}
+
+int main() {
+    int n, target;
+
+    printf("Enter number of elements: ");
+    scanf("%d", &n);
+
+    int arr[n];
+
+    printf("Enter %d elements (in sorted order):\n", n);
+
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+
+    printf("Enter element to search: ");
+    scanf("%d", &target);
+
+    int result = binarySearch(arr, n, target);
+
+    if (result != -1)
+        printf("Element found at index %d\n", result);
+    else
+        printf("Element not found\n");
+
+    return 0;
+}
+
+
+
+
+
+
+
+2.Implementation of finding maximum and minimum numbers using divide and conquer 
+
+
+algo
+
+
+  Step 1: Start
+
+  Step 2: Input
+
+	•Read the number of elements n
+
+	•Read n elements into the array
+
+  Step 3: Define Function getMinMax(arr, low, high)
+
+  Case 1: Only One Element
+
+	•If low == high
+
+	    •Set both minimum and maximum as arr[low]
+
+	    •Return the result
+ 
+  Case 2: Two Elements
+
+	•If high == low + 1
+
+	    •Compare the two elements
+
+	    •Assign the smaller value to minimum
+
+	    •Assign the larger value to maximum
+
+	    •Return the result
+
+  Case 3: More Than Two Elements
+
+	1.Find the middle index
+
+	mid = (low + high) / 2
+
+	2.Divide the array into two halves
+
+	•Left half → low to mid
+
+	•Right half → mid + 1 to high
+
+	3.Recursively find minimum and maximum in both halves
+
+	4.Combine the results
+
+	•Minimum = smaller of left minimum and right minimum
+
+	•Maximum = larger of left maximum and right maximum
+
+	5.Return the final result
+
+  Step 4: Call Function
+
+	•Call getMinMax(arr, 0, n - 1)
+
+  Step 5: Display Output
+
+	•Print the minimum element
+
+	•Print the maximum element
+
+  Step 6: Stop
+
+
+time complexity
+
+O(n)
+
+The algorithm checks every element approximately once.
+
+space complexity 
+
+O(log n)
+
+Because recursive calls use stack memory proportional to the height of the recursion tree.
+
+
+
+Code
+
+
+#include <stdio.h>
+
+struct Pair {
+    int min;
+    int max;
+};
+
+struct Pair getMinMax(int arr[], int low, int high) {
+    struct Pair result, left, right;
+    int mid;
+
+    if (low == high) {
+        result.min = arr[low];
+        result.max = arr[low];
+        return result;
+    }
+
+    if (high == low + 1) {
+        if (arr[low] > arr[high]) {
+            result.max = arr[low];
+            result.min = arr[high];
+        } else {
+            result.max = arr[high];
+            result.min = arr[low];
+        }
+
+        return result;
+    }
+
+    mid = (low + high) / 2;
+
+    left = getMinMax(arr, low, mid);
+    right = getMinMax(arr, mid + 1, high);
+
+    result.min = (left.min < right.min) ? left.min : right.min;
+    result.max = (left.max > right.max) ? left.max : right.max;
+
+    return result;
+}
+
+int main() {
+    int n, i;
+
+    printf("Enter number of elements: ");
+    scanf("%d", &n);
+
+    int arr[n];
+
+    printf("Enter %d elements:\n", n);
+
+    for (i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+
+    struct Pair result = getMinMax(arr, 0, n - 1);
+
+    printf("Minimum element: %d\n", result.min);
+    printf("Maximum element: %d\n", result.max);
+
+    return 0;
+}
+
+
+
+
+
+3.Implementation of Merge sort.
+
+algo
+
+Step 1: Start
+
+Step 2: Input
+
+  •Read the number of elements n
+
+  •Read n elements into the array
+
+Step 3: Call mergeSort(arr, left, right)
+
+	•If left < right
+
+		•Find the middle index
+
+		•mid = (left + right) / 2
+
+		•Recursively sort the left half from left to mid
+
+		•Recursively sort the right half from mid + 1 to right
+
+		•Merge both sorted halves using merge()
+
+  Step 4: Merge Process
+
+	•Create temporary arrays for left and right halves
+
+	•Compare elements from both halves
+
+	•Place the smaller element into the original array
+
+	•Copy the remaining elements, if any
+
+  Step 5:Repeat until the complete array becomes sorted
+
+  Step 6: Display Output
+
+	•Print the sorted array
+
+  Step 7: Stop
+
+
+time complexity
+
+Best Case	O(n log n)
+Average Case	O(n log n)
+Worst Case	O(n log n)
+
+Space Complexity	
+
+O(n)
+
+
+Code
+
+
+#include <stdio.h>
+
+void merge(int arr[], int left, int mid, int right) {
+    int i, j, k;
+
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
+
+    int L[n1], R[n2];
+
+    for (i = 0; i < n1; i++)
+        L[i] = arr[left + i];
+
+    for (j = 0; j < n2; j++)
+        R[j] = arr[mid + 1 + j];
+
+    i = 0;
+    j = 0;
+    k = left;
+
+    while (i < n1 && j < n2) {
+        if (L[i] <= R[j]) {
+            arr[k] = L[i];
+            i++;
+        } else {
+            arr[k] = R[j];
+            j++;
+        }
+
+        k++;
+    }
+
+    while (i < n1) {
+        arr[k] = L[i];
+        i++;
+        k++;
+    }
+
+    while (j < n2) {
+        arr[k] = R[j];
+        j++;
+        k++;
+    }
+}
+
+void mergeSort(int arr[], int left, int right) {
+    if (left < right) {
+        int mid = left + (right - left) / 2;
+
+        mergeSort(arr, left, mid);
+        mergeSort(arr, mid + 1, right);
+
+        merge(arr, left, mid, right);
+    }
+}
+
+int main() {
+    int n;
+
+    printf("Enter number of elements: ");
+    scanf("%d", &n);
+
+    int arr[n];
+
+    printf("Enter %d elements:\n", n);
+
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+
+    mergeSort(arr, 0, n - 1);
+
+    printf("Sorted array:\n");
+
+    for (int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+
+    return 0;
+}
+
+
+
+
+
+
+3.Implementation of Quick sort. 
+
+
+algo
+
+  Step 1: Start
+
+  Step 2: Input
+
+	•Read the number of elements n
+
+	•Read n elements into the array
+
+  Step 3: Call quickSort(arr, low, high)
+
+	•If low < high
+
+	     •Select the last element as the pivot
+
+	     •Partition the array such that
+
+		•Elements smaller than the pivot are placed on the left side
+
+		•Elements greater than the pivot are placed on the right side
+
+	     •Place the pivot in its correct position
+
+	     •Recursively apply Quick Sort on the left subarray
+
+	     •Recursively apply Quick Sort on the right subarray
+
+	     •Repeat the process until the array becomes sorted
+
+  Step 4: Display Output
+
+	•Print the sorted array
+
+  Step 5: Stop
+
+
+Time complexity
+
+Best Case	O(n log n)
+Average Case	O(n log n)
+Worst Case	O(n²)
+
+
+Space Complexity
+
+O(log n)
+
+
+Code
+
+#include <stdio.h>
+
+void swap(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+int partition(int arr[], int low, int high) {
+    int pivot = arr[high];
+    int i = low - 1;
+
+    for (int j = low; j < high; j++) {
+        if (arr[j] < pivot) {
+            i++;
+            swap(&arr[i], &arr[j]);
+        }
+    }
+
+    swap(&arr[i + 1], &arr[high]);
+
+    return i + 1;
+}
+
+void quickSort(int arr[], int low, int high) {
+    if (low < high) {
+        int pi = partition(arr, low, high);
+
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
+
+int main() {
+    int n;
+
+    printf("Enter number of elements: ");
+    scanf("%d", &n);
+
+    int arr[n];
+
+    printf("Enter %d elements:\n", n);
+
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+
+    quickSort(arr, 0, n - 1);
+
+    printf("Sorted array:\n");
+
+    for (int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+
+    return 0;
+}
+
+
+
+4.Implementation of Selection sort. 
+
+algo
+
+ Step 1: Start
+
+ Step 2: Input
+
+ 	•Read the number of elements n
+
+ 	•Read n elements into the array
+
+ Step 3: Perform Selection Sort
+
+ 	•For each position i from 0 to n - 1
+
+  	   •Assume the current element is the minimum
+
+  	   •Compare it with the remaining unsorted elements
+
+  	   •Find the smallest element in the unsorted part
+
+  	   •Swap the smallest element with the current element
+
+ Step 4: Repeat
+
+ 	•Repeat the process until the array becomes sorted
+
+ Step 5: Display Output
+
+ 	•Print the sorted array
+
+ Step 6: Stop
+
+Time Complexity
+
+Best Case	O(n²)
+
+Average Case	O(n²)
+
+Worst Case	O(n²)
+
+Space Complexity	
+
+O(1)
+
+
+Code:
+
+
+#include <stdio.h>
+
+int main() {
+    int n, i, j, minIndex, temp;
+
+    printf("Enter number of elements: ");
+    scanf("%d", &n);
+
+    int arr[n];
+
+    printf("Enter %d elements:\n", n);
+
+    for (i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+
+    for (i = 0; i < n - 1; i++) {
+        minIndex = i;
+
+        for (j = i + 1; j < n; j++) {
+            if (arr[j] < arr[minIndex]) {
+                minIndex = j;
+            }
+        }
+
+        temp = arr[i];
+        arr[i] = arr[minIndex];
+        arr[minIndex] = temp;
+    }
+
+    printf("Sorted array:\n");
+
+    for (i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+
+    return 0;
+}
+
+
+
+
+5.Implementation of Job Sequencing with deadlines 
+
+
+
+algo
+
+
+  Step 1: Start
+
+  Step 2: Input
+
+ 	Read the number of jobs n
+
+ 	For each job, read:
+
+  	 •Job ID
+
+  	 •Deadline
+
+  	 •Profit
+
+  Step 3: Find Maximum Deadline
+
+ 	•Find the maximum deadline among all jobs
+
+  Step 4: Sort Jobs
+
+ 	•Sort all jobs in decreasing order of profit
+
+  Step 5: Create Slots
+
+ 	•Create an array of slots
+
+ 	•Initialize all slots as empty
+
+  Step 6: Perform Job Sequencing
+
+	 For each job
+
+  	   •Check slots from its deadline to the beginning
+
+ 	   •If an empty slot is found
+
+   		•Assign the job to that slot
+
+   		•Add its profit to the total profit
+
+  Step 7: Display Output
+
+ 	•Print the scheduled jobs
+
+	•Print the total profit
+
+  Step 8: Stop
+
+Time Complexity
+
+O(n log n + n × d)
+
+
+Space Complexity	
+
+O(d)
+Where d is the maximum deadline and n is no of jobs.
+
+
+Code
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Job {
+    char id[10];
+    int d, p;
+};
+
+int cmp(const void *a, const void *b) {
+    return ((struct Job *)b)->p - ((struct Job *)a)->p;
+}
+
+int main() {
+    int n, i, j, maxD = 0, profit = 0;
+
+    printf("Enter number of jobs: ");
+    scanf("%d", &n);
+
+    struct Job jobs[n];
+
+    for (i = 0; i < n; i++) {
+        printf("Enter id, deadline, profit: ");
+        scanf("%s %d %d", jobs[i].id, &jobs[i].d, &jobs[i].p);
+
+        if (jobs[i].d > maxD)
+            maxD = jobs[i].d;
+    }
+
+    qsort(jobs, n, sizeof(struct Job), cmp);
+
+    int slot[maxD];
+
+    for (i = 0; i < maxD; i++)
+        slot[i] = -1;
+
+    for (i = 0; i < n; i++) {
+        for (j = jobs[i].d - 1; j >= 0; j--) {
+            if (slot[j] == -1) {
+                slot[j] = i;
+                profit += jobs[i].p;
+                break;
+            }
+        }
+    }
+
+    printf("Scheduled Jobs: ");
+
+    for (i = 0; i < maxD; i++) {
+        if (slot[i] != -1)
+            printf("%s ", jobs[slot[i]].id);
+    }
+
+    printf("\nTotal Profit: %d\n", profit);
+
+    return 0;
+}
+
+
+
+6.Program for finding the minimum cost Spanning Tree. 
+
+
+(A) Prim's algorithm
+
+
+algo
+
+
+  Step 1: Start
+
+  Step 2: Input
+
+ 	•Read the number of vertices V
+
+ 	•Read the adjacency matrix of the graph
+
+  Step 3: Initialize
+
+ 	•key[] with infinity
+
+ 	•mstSet[] as false
+
+	•parent[] array
+
+  Step 4: Set Initial Values
+
+ 	•Set key[0] = 0
+
+ 	•Set parent[0] = -1
+
+  Step 5: Construct Minimum Spanning Tree
+
+    Repeat V - 1 times
+
+  	•Select the vertex with minimum key value not included in MST
+
+  	•Mark the selected vertex as included in MST
+
+  	•Update key values of adjacent vertices if a smaller edge weight is found
+
+  Step 6: Display Output
+
+ 	•Print the edges of the Minimum Spanning Tree
+
+ 	•Print their weights
+
+  Step 7: Stop
+
+
+Time Complexity	
+
+O(V²)
+
+
+Space Complexity	
+
+O(V)
+Where V is the number of vertices.
+
+
+Code:
+
+
+#include <stdio.h>
+#include <limits.h>
+
+#define MAX 100
+
+int minKey(int key[], int mstSet[], int V) {
+    int min = INT_MAX, min_index;
+
+    for (int v = 0; v < V; v++) {
+        if (!mstSet[v] && key[v] < min) {
+            min = key[v];
+            min_index = v;
+        }
+    }
+
+    return min_index;
+}
+
+void primMST(int graph[MAX][MAX], int V) {
+    int parent[MAX], key[MAX], mstSet[MAX];
+
+    for (int i = 0; i < V; i++) {
+        key[i] = INT_MAX;
+        mstSet[i] = 0;
+    }
+
+    key[0] = 0;
+    parent[0] = -1;
+
+    for (int count = 0; count < V - 1; count++) {
+        int u = minKey(key, mstSet, V);
+
+        mstSet[u] = 1;
+
+        for (int v = 0; v < V; v++) {
+            if (graph[u][v] && !mstSet[v] && graph[u][v] < key[v]) {
+                parent[v] = u;
+                key[v] = graph[u][v];
+            }
+        }
+    }
+
+    printf("\nEdge \tWeight\n");
+
+    for (int i = 1; i < V; i++) {
+        printf("%d - %d \t%d\n", parent[i], i, graph[i][parent[i]]);
+    }
+}
+
+int main() {
+    int V, graph[MAX][MAX];
+
+    printf("Enter number of vertices: ");
+    scanf("%d", &V);
+
+    printf("Enter adjacency matrix:\n");
+
+    for (int i = 0; i < V; i++) {
+        for (int j = 0; j < V; j++) {
+            scanf("%d", &graph[i][j]);
+        }
+    }
+
+    primMST(graph, V);
+
+    return 0;
+}
+
+
+
+
+(B) Kruskal's algorithm
+
+
+algo
+
+
+  Step 1: Start
+
+  Step 2: Input
+
+ 	•Read the number of vertices V
+
+ 	•Read the number of edges E
+
+ 	•Read all edges with source, destination, and weight
+
+  Step 3: Sort Edges
+
+ 	•Sort all edges in increasing order of weight
+
+  Step 4: Initialize Sets
+
+ 	•Initialize each vertex as a separate set
+
+  Step 5: Construct Minimum Spanning Tree
+
+ 	For each edge in sorted order
+
+  	  •Find the parent of source and destination vertices
+
+  	  •If they belong to different sets
+
+   		•Include the edge in MST
+
+   		•Perform union of the two sets
+
+ 	  •Repeat until V - 1 edges are included in MST
+
+  Step 6: Display Output
+
+ 	•Print the edges of the Minimum Spanning Tree
+
+ 	•Print their weights
+
+  Step 7: Stop
+
+
+Time Complexity	
+
+O(E log E)
+
+
+Space Complexity	
+
+O(V)
+
+
+Code:
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX 100
+
+struct Edge {
+    int src, dest, weight;
+};
+
+struct Subset {
+    int parent;
+    int rank;
+};
+
+int find(struct Subset subsets[], int i) {
+    if (subsets[i].parent != i)
+        subsets[i].parent = find(subsets, subsets[i].parent);
+
+    return subsets[i].parent;
+}
+
+void Union(struct Subset subsets[], int x, int y) {
+    int rootX = find(subsets, x);
+    int rootY = find(subsets, y);
+
+    if (subsets[rootX].rank < subsets[rootY].rank)
+        subsets[rootX].parent = rootY;
+    else if (subsets[rootX].rank > subsets[rootY].rank)
+        subsets[rootY].parent = rootX;
+    else {
+        subsets[rootY].parent = rootX;
+        subsets[rootX].rank++;
+    }
+}
+
+int compare(const void *a, const void *b) {
+    return ((struct Edge *)a)->weight - ((struct Edge *)b)->weight;
+}
+
+void kruskalMST(struct Edge edges[], int V, int E) {
+    struct Edge result[MAX];
+
+    int e = 0;
+    int i = 0;
+
+    qsort(edges, E, sizeof(edges[0]), compare);
+
+    struct Subset subsets[MAX];
+
+    for (int v = 0; v < V; v++) {
+        subsets[v].parent = v;
+        subsets[v].rank = 0;
+    }
+
+    while (e < V - 1 && i < E) {
+        struct Edge next = edges[i++];
+
+        int x = find(subsets, next.src);
+        int y = find(subsets, next.dest);
+
+        if (x != y) {
+            result[e++] = next;
+            Union(subsets, x, y);
+        }
+    }
+
+    printf("\nEdge \tWeight\n");
+
+    for (i = 0; i < e; i++) {
+        printf("%d - %d \t%d\n",
+               result[i].src,
+               result[i].dest,
+               result[i].weight);
+    }
+}
+
+int main() {
+    int V, E;
+
+    struct Edge edges[MAX];
+
+    printf("Enter number of vertices and edges: ");
+    scanf("%d %d", &V, &E);
+
+    printf("Enter edges (src dest weight):\n");
+
+    for (int i = 0; i < E; i++) {
+        scanf("%d %d %d",
+              &edges[i].src,
+              &edges[i].dest,
+              &edges[i].weight);
+    }
+
+    kruskalMST(edges, V, E);
+
+    return 0;
+}
+
+
+
+7.Implementation of single-source shortest path. 
+
+
+algo 
+
+  Step 1: Start
+
+  Step 2: Input
+
+ 	•Read the number of vertices V
+
+ 	•Read the adjacency matrix of the graph
+
+ 	•Read the source vertex
+
+  Step 3: Initialize
+
+ 	•dist[] with infinity
+
+ 	•sptSet[] as false
+
+ 	•Set distance of the source vertex as 0
+
+  Step 4: Find Shortest Paths
+
+ 	Repeat V - 1 times
+
+  	  •Select the vertex with minimum distance not yet included in the shortest path tree
+
+  	  •Mark the selected vertex as visited
+
+  	  •Update distances of adjacent vertices if a shorter path is found through the selected vertex
+
+  Step 5: Display Output
+
+ 	•Print the shortest distance from the source vertex to all vertices
+
+  Step 6: Stop
+
+
+Time Complexity	
+
+O(V²)
+
+Space Complexity	
+
+O(V)
+
+
+code
+
+#include <stdio.h>
+#include <limits.h>
+
+#define MAX 100
+#define INF INT_MAX
+
+int minDistance(int dist[], int sptSet[], int V) {
+    int min = INF, min_index;
+
+    for (int v = 0; v < V; v++) {
+        if (sptSet[v] == 0 && dist[v] <= min) {
+            min = dist[v];
+            min_index = v;
+        }
+    }
+
+    return min_index;
+}
+
+void dijkstra(int graph[MAX][MAX], int V, int src) {
+    int dist[MAX], sptSet[MAX];
+
+    for (int i = 0; i < V; i++) {
+        dist[i] = INF;
+        sptSet[i] = 0;
+    }
+
+    dist[src] = 0;
+
+    for (int count = 0; count < V - 1; count++) {
+        int u = minDistance(dist, sptSet, V);
+
+        sptSet[u] = 1;
+
+        for (int v = 0; v < V; v++) {
+            if (!sptSet[v] &&
+                graph[u][v] &&
+                dist[u] != INF &&
+                dist[u] + graph[u][v] < dist[v]) {
+
+                dist[v] = dist[u] + graph[u][v];
+            }
+        }
+    }
+
+    printf("Vertex \tDistance from Source\n");
+
+    for (int i = 0; i < V; i++) {
+        if (dist[i] == INF) {
+            printf("%d \t\t INF\n", i);
+        } else {
+            printf("%d \t\t %d\n", i, dist[i]);
+        }
+    }
+}
+
+int main() {
+    int V, graph[MAX][MAX], src;
+
+    printf("Enter the number of vertices: ");
+    scanf("%d", &V);
+
+    printf("Enter the adjacency matrix:\n");
+
+    for (int i = 0; i < V; i++) {
+        for (int j = 0; j < V; j++) {
+            scanf("%d", &graph[i][j]);
+        }
+    }
+
+    printf("Enter the source vertex: ");
+    scanf("%d", &src);
+
+    dijkstra(graph, V, src);
+
+    return 0;
+}
+
+
+
+
+8. Implementation of all-pairs shortest path.
+
+
+algo
+
+
+  Step 1: Start
+
+  Step 2: Input
+
+ 	•Read the number of vertices V
+
+ 	•Read the adjacency matrix of the graph
+
+  Step 3: Initialize Distance Matrix
+
+ 	•If there is no edge between two vertices, set distance as INF
+
+ 	•Otherwise, copy edge weights into the distance matrix
+
+  Step 4: Apply Floyd-Warshall Algorithm
+
+ 	For each vertex k
+
+  	  •For every pair of vertices (i, j)
+
+   	        •Check if path i → k → j is shorter than path i → j
+
+   		•If shorter, update the distance
+
+ 	Repeat until all vertices are considered as intermediate vertices
+
+  Step 5: Display Output
+
+ 	•Print the shortest distance matrix
+
+  Step 6: Stop
+
+
+Time Complexity	
+
+O(V³)
+
+Space Complexity
+	
+
+O(V²)
+
+
+Code
+
+
+#include <stdio.h>
+#include <limits.h>
+
+#define MAX 100
+#define INF INT_MAX
+
+void floydWarshall(int graph[MAX][MAX], int V) {
+    int dist[MAX][MAX];
+
+    for (int i = 0; i < V; i++) {
+        for (int j = 0; j < V; j++) {
+            if (graph[i][j] == 0 && i != j) {
+                dist[i][j] = INF;
+            } else {
+                dist[i][j] = graph[i][j];
+            }
+        }
+    }
+
+    for (int k = 0; k < V; k++) {
+        for (int i = 0; i < V; i++) {
+            for (int j = 0; j < V; j++) {
+                if (dist[i][k] != INF &&
+                    dist[k][j] != INF &&
+                    dist[i][j] > dist[i][k] + dist[k][j]) {
+
+                    dist[i][j] = dist[i][k] + dist[k][j];
+                }
+            }
+        }
+    }
+
+    printf("\nShortest distances between every pair of vertices:\n");
+
+    for (int i = 0; i < V; i++) {
+        for (int j = 0; j < V; j++) {
+            if (dist[i][j] == INF) {
+                printf("INF\t");
+            } else {
+                printf("%d\t", dist[i][j]);
+            }
+        }
+
+        printf("\n");
+    }
+}
+
+int main() {
+    int V, graph[MAX][MAX];
+
+    printf("Enter the number of vertices: ");
+    scanf("%d", &V);
+
+    printf("Enter the adjacency matrix (0 for no edge, any positive number for edge weight):\n");
+
+    for (int i = 0; i < V; i++) {
+        for (int j = 0; j < V; j++) {
+            scanf("%d", &graph[i][j]);
+        }
+    }
+
+    floydWarshall(graph, V);
+
+    return 0;
+}
+
+
+
+
+
+9. Program for Tree traversal techniques.
+
+
+algo
+
+
+  Step 1: Start
+
+  Step 2: Create Binary Tree
+
+ 	•Create nodes dynamically for the binary tree
+
+  Step 3: Build the Tree Recursively
+
+ 	•Input the node value
+
+ 	•If value is -1 Return NULL
+
+ 	•Create a new node
+
+ 	•Recursively create the left child
+
+ 	•Recursively create the right child
+
+  Step 4: Perform Tree Traversals
+
+ 	•Inorder Traversal :Left → Root → Right
+
+ 	•Preorder Traversal :Root → Left → Right
+
+ 	•Postorder Traversal :Left → Right → Root
+
+  Step 5: Display Output
+
+ 	•Print the traversal results
+
+  Step 6: Stop 
+
+
+Traversal	Time 	Space 
+Inorder		O(n)	O(h)
+Preorder	O(n)	O(h)
+Postorder	O(n)	O(h)
+Where:
+n = number of nodes
+h = height of the tree
+
+
+code
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int item;
+    struct node *left;
+    struct node *right;
+};
+
+struct node* createNode(int value) {
+    struct node *newNode = malloc(sizeof(struct node));
+
+    newNode->item = value;
+    newNode->left = NULL;
+    newNode->right = NULL;
+
+    return newNode;
+}
+
+struct node* buildTree() {
+    int value;
+
+    printf("Enter node value (-1 for no node): ");
+    scanf("%d", &value);
+
+    if (value == -1)
+        return NULL;
+
+    struct node *root = createNode(value);
+
+    printf("Enter left child of %d\n", value);
+    root->left = buildTree();
+
+    printf("Enter right child of %d\n", value);
+    root->right = buildTree();
+
+    return root;
+}
+
+void inorderTraversal(struct node *root) {
+    if (root == NULL)
+        return;
+
+    inorderTraversal(root->left);
+    printf("%d ", root->item);
+    inorderTraversal(root->right);
+}
+
+void preorderTraversal(struct node *root) {
+    if (root == NULL)
+        return;
+
+    printf("%d ", root->item);
+    preorderTraversal(root->left);
+    preorderTraversal(root->right);
+}
+
+void postorderTraversal(struct node *root) {
+    if (root == NULL)
+        return;
+
+    postorderTraversal(root->left);
+    postorderTraversal(root->right);
+    printf("%d ", root->item);
+}
+
+int main() {
+    struct node *root;
+
+    printf("Build Binary Tree\n");
+
+    root = buildTree();
+
+    printf("\nInorder traversal:\n");
+    inorderTraversal(root);
+
+    printf("\nPreorder traversal:\n");
+    preorderTraversal(root);
+
+    printf("\nPostorder traversal:\n");
+    postorderTraversal(root);
+
+    return 0;
+}
+
+
+10. Program for Graph Traversal Technique.
+
+BFS
+
+
+algo
+
+  Step 1: Start
+
+  Step 2: Input
+
+ 	•Read the number of vertices and edges
+
+ 	•Create an adjacency matrix for the graph
+
+ 	•Read all edges and store them in the matrix
+
+ 	•Read the starting vertex
+
+  Step 3: Initialize
+
+ 	•Initialize the queue
+
+ 	•Initialize the visited array
+
+ 	•Mark the starting vertex as visited
+
+ 	•Insert the starting vertex into the queue
+
+  Step 4: Perform Breadth First Search
+
+ 	While the queue is not empty
+
+  	   •Remove a vertex from the queue
+
+  	   •Print the vertex
+
+  	   •Check all adjacent vertices
+
+   		•If an adjacent vertex is unvisited
+
+    		   •Mark it as visited
+
+    		   •Insert it into the queue
+
+  Step 5: Repeat
+
+ 	•Repeat until all reachable vertices are visited
+
+  Step 6: Stop
+
+Time Complexity	
+
+O(V²)
+
+Space Complexity	
+
+O(V)
+V = number of vertices
+
+
+CODE
+
+
+#include <stdio.h>
+
+#define MAX 100
+
+int adj[MAX][MAX], visited[MAX], queue[MAX];
+int front = 0, rear = -1, n;
+
+void BFS(int start) {
+    visited[start] = 1;
+    queue[++rear] = start;
+
+    while (front <= rear) {
+        int node = queue[front++];
+
+        printf("%d ", node);
+
+        for (int i = 0; i < n; i++) {
+            if (adj[node][i] && !visited[i]) {
+                visited[i] = 1;
+                queue[++rear] = i;
+            }
+        }
+    }
+}
+
+int main() {
+    int edges, u, v, start;
+
+    printf("Enter vertices: ");
+    scanf("%d", &n);
+
+    printf("Enter edges: ");
+    scanf("%d", &edges);
+
+    printf("Enter edges (u v):\n");
+
+    for (int i = 0; i < edges; i++) {
+        scanf("%d %d", &u, &v);
+
+        adj[u][v] = adj[v][u] = 1;
+    }
+
+    printf("Start node: ");
+    scanf("%d", &start);
+
+    printf("BFS Traversal: ");
+
+    BFS(start);
+
+    return 0;
+}
+
+
+
+DFS
+
+
+algo
+
+  Step 1: Start
+
+  Step 2: Input
+
+ 	•Read the number of vertices and edges
+
+ 	•Create and initialize the adjacency matrix
+
+ 	•Read all edges and store them in the matrix
+
+ 	•Read the starting vertex
+
+  Step 3: Initialize
+
+ 	•Initialize all vertices as unvisited
+
+  Step 4: Call DFS(start)
+
+ 	•Mark the current vertex as visited
+
+ 	•Print the vertex
+
+ 	•Visit all adjacent unvisited vertices recursively
+
+  Step 5: Repeat
+
+ 	•Repeat until all reachable vertices are visited
+
+  Step 6: Stop
+
+
+
+Time Complexity	
+
+O(V²)
+
+Space Complexity	
+
+O(V)
+V = number of vertices
+
+
+
+code
+
+
+#include <stdio.h>
+
+#define MAX 100
+
+int n;
+int adj[MAX][MAX];
+int visited[MAX];
+
+void DFS(int node) {
+    visited[node] = 1;
+
+    printf("%d ", node);
+
+    for (int i = 0; i < n; i++) {
+        if (adj[node][i] == 1 && !visited[i]) {
+            DFS(i);
+        }
+    }
+}
+
+int main() {
+    int edges, u, v, start;
+
+    printf("Kailash Kumawat - BS31\n");
+    printf("DFS Traversal\n");
+
+    printf("Enter vertices: ");
+    scanf("%d", &n);
+
+    printf("Enter edges: ");
+    scanf("%d", &edges);
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            adj[i][j] = 0;
+        }
+    }
+
+    printf("Enter edges (u v):\n");
+
+    for (int i = 0; i < edges; i++) {
+        scanf("%d %d", &u, &v);
+
+        adj[u][v] = 1;
+        adj[v][u] = 1;
+    }
+
+    printf("Start node: ");
+    scanf("%d", &start);
+
+    for (int i = 0; i < n; i++) {
+        visited[i] = 0;
+    }
+
+    printf("DFS Traversal: ");
+
+    DFS(start);
+
+    return 0;
+}
+  </pre>
+</body>
+</html>
